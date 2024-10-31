@@ -1,23 +1,13 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useGameState } from "./hooks/useGameState";
 
 export const Game = () => {
-  const [state, setState] = useState(1);
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    setSearchParams({ state: state.toString() });
-  }, [state]);
-
-  useEffect(() => {
-    setState(searchParams.get("state") ? Number(searchParams.get("state")) : 1);
-  }, []);
+  const [state, dispatch] = useGameState();
 
   return (
     <div className="flex flex-col items-start">
       <h1 className="text-neutral-900">Game</h1>
-      <button onClick={() => setState((s) => s + 1)}>+</button>
-      <span>{searchParams.get("state")}</span>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+      <span>{state.count}</span>
     </div>
   );
 };
